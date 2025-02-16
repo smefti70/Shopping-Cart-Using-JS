@@ -1,0 +1,292 @@
+/* General styling for the body */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header section */
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+}
+
+/* Shopping cart icon */
+.cart-icon {
+    cursor: pointer;
+}
+
+/* Product list container */
+#product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Individual product card styling */
+.product {
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+
+/*Product Image styling*/
+.product img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px; /* Rounded corners for the image */
+    object-fit: cover; /* Maintain aspect ratio and fill space */
+}
+
+/* Product title styling */
+.product h5 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #333;
+}
+
+/*Product description styling */
+.product .product-details {
+    font-size: 0.95rem;
+    color: #555;
+    margin: 10px 0;
+}
+
+/* Price styling */
+.product p {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+/* Add to Cart button styling */
+.product button {
+    background-color: #28a745; /* Green background */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover effect for Add to Cart button */
+.product button:hover {
+    background-color: #218838; /* Darker green when hovering */
+}
+
+/* Button styling */
+button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+}
+
+/* Cart container styling */
+#cart-container {
+    padding: 20px;
+    border-top: 2px solid #ddd;
+}
+
+#cart-total-container {
+    display: block; /* Ensure it's visible */
+}
+
+/* Cart sidebar styling */
+#cart-sidebar {
+    width: 380px;
+    max-width: 420px;
+    background-color: #ffffff;
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100vh;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+    padding: 25px;
+    overflow-y: auto;
+    transition: 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    border-left: 3px solid #ddd;
+}
+
+/* Cart item styling */
+.cart-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    background: #f9f9f9;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+
+/* Cart item row styling */
+.cart-item-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Cart item top section (name, price, image) */
+.cart-item-top {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Cart item image styling */
+.cart-item img {
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: #fff;
+    padding: 5px;
+    border: 1px solid #ddd;
+}
+
+/* Cart item details section */
+.cart-item-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Cart item name styling */
+.cart-item h4 {
+    font-size: 16px;
+    margin: 0;
+    font-weight: bold;
+    color: #444;
+}
+
+/* Cart item description styling */
+.cart-item p {
+    font-size: 14px;
+    color: #666;
+    margin: 3px 0 0;
+}
+
+/* Cart item bottom section (quantity, remove button) */
+.cart-item-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Quantity controls in cart */
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px 10px;
+    background: white;
+}
+
+/* Quantity control buttons */
+.quantity-controls button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    padding: 5px;
+}
+
+/* Quantity display styling */
+.quantity-controls span {
+    padding: 0 10px;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+/* Remove item button in cart */
+.cart-item .remove-item {
+    background-color: transparent;
+    border: none;
+    color: #d9534f;
+    cursor: pointer;
+    font-size: 18px;
+    transition: color 0.2s;
+}
+
+/* Remove item button hover effect */
+.cart-item .remove-item:hover {
+    color: #b52b27;
+}
+
+/* Cart checkout section */
+.cart-footer {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 2px solid #ddd;
+    text-align: center;
+    background: #f1f1f1;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+/* Total price display in cart footer */
+.cart-footer .total-price {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Checkout button in cart footer */
+.cart-footer button {
+    background-color: #007bff;
+    color: white;
+    padding: 14px;
+    border-radius: 8px;
+    width: 100%;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+/* Checkout button hover effect */
+.cart-footer button:hover {
+    background-color: #0056b3;
+}
+
+/* Product images styling */
+.product img {
+    max-width: 100%;
+    height: auto;
+    max-height: 180px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+/* Product details section inside product card */
+.product .product-details {
+    font-size: 14px;
+    flex-grow: 1;
+}
