@@ -39,11 +39,23 @@
         </div>
         <div class="offcanvas-body">
             <div id="cart-items" class="list-group"></div>
-            <p class="mt-3" id="cart-total-container">Total: $<span id="cart-total">0.00</span></p>
-            <button id="clear-cart" class="btn btn-danger w-100">Clear Cart</button>
+            
+            <p class="mt-3" id="cart-subtotal-container">Subtotal: $<span id="cart-subtotal">0.00</span></p>
+            <p class="mt-1" id="cart-discount-container">Discount: $<span id="cart-discount">0.00</span></p>
+            <p class="mt-1 fw-bold" id="cart-total-container">Total: $<span id="cart-total">0.00</span></p>
+
+            <!-- Promo Code Input -->
+            <div class="mt-3" id="promo-code-cotainer">
+                <input type="text" id="promo-code" class="form-control" placeholder="Enter promo code">
+                <button id="apply-promo" class="btn btn-primary w-100 mt-2" onclick="applyPromoCode()">Apply Promo</button>
+                <p id="promo-message" class="mt-2"></p>
+            </div>
+
+            <button id="clear-cart" class="btn btn-danger w-100 mt-3" onclick="clearCart()">Clear Cart</button>
         </div>
     </div>
     <!-- End of Cart Sidebar Section -->
+
 
     <!-- Start of Product List Section -->
     <div class="container mt-4">

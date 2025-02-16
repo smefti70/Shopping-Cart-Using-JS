@@ -1,62 +1,84 @@
 let cart = [];
+const promoCodes = {
+    "ostad10": 0.10,
+    "ostad5": 0.05
+};
+let appliedPromoCode = null;
 
 // Add item to cart
 function addToCart(id, name, price, image) {
-    id = Number(id);  // Ensure ID is a number
+    id = Number(id);
     let item = cart.find(product => product.id === id);
 
-    // If item exists, increment quantity, otherwise add it to the cart
     if (item) {
         item.quantity++;
     } else {
         cart.push({ id, name, price, image, quantity: 1 });
     }
 
-    updateCart();  
-    updateCartCount();  
+    updateCart();
+    updateCartCount();
 }
 
 // Remove item from cart
 function removeFromCart(id) {
-    cart = cart.filter(item => item.id !== id);  // Filter out the item with the given ID
+    cart = cart.filter(item => item.id !== id);
     updateCart();
 }
 
 // Update item quantity
 function updateQuantity(id, quantity) {
     let item = cart.find(product => product.id === id);
-    quantity = Math.max(1, parseInt(quantity) || 1); // Ensure valid quantity
+    quantity = Math.max(1, parseInt(quantity) || 1);
     if (item) {
-        item.quantity = quantity;  // Update item quantity
+        item.quantity = quantity;
     }
     updateCart();
 }
 
 // Clear the cart
 function clearCart() {
-    cart = [];  // Reset the cart to an empty array
+    cart = [];
+    appliedPromoCode = null; // Reset promo code on cart clear
+    document.getElementById("promo-code").value = "";
+    document.getElementById("promo-message").textContent = "";
     updateCart();
 }
 
-// Render cart items and update UI
+// Update cart UI and apply discounts
 function updateCart() {
     let cartContainer = document.getElementById("cart-items");
+    let subtotalElement = document.getElementById("cart-subtotal");
+    let subtotalContainer = document.getElementById("cart-subtotal-container");
+    let discountContainer = document.getElementById("cart-discount-container");
     let totalContainer = document.getElementById("cart-total-container");
+    let promoContainer = document.getElementById("promo-code-cotainer");
+    let discountElement = document.getElementById("cart-discount");
+    let totalElement = document.getElementById("cart-total");
     let clearCartButton = document.getElementById("clear-cart");
-    cartContainer.innerHTML = "";
 
-    let total = 0;
+    cartContainer.innerHTML = ""; // Clear previous items
+    let subtotal = 0;
 
     if (cart.length === 0) {
         cartContainer.innerHTML = "<p class='text-center'>Your cart is empty.</p>";
-        totalContainer.style.display = 'none';  // Hide total
-        clearCartButton.style.display = 'none'; // Hide clear cart button
+        subtotalElement.textContent = "0.00";  
+        discountElement.textContent = "0.00";  
+        totalElement.textContent = "0.00";  
+        clearCartButton.style.display = 'none';
+        subtotalContainer.style.display = 'none';
+        totalContainer.style.display = 'none';
+        discountContainer.style.display = 'none';
+        promoContainer.style.display = 'none';
     } else {
-        totalContainer.style.display = 'block';  // Show total
-        clearCartButton.style.display = 'block'; // Show clear cart button
-        
+        subtotalContainer.style.display = 'block';
+        totalContainer.style.display = 'block';
+        discountContainer.style.display = 'block';
+        promoContainer.style.display = 'block';
+        clearCartButton.style.display = 'block';
+
         cart.forEach(item => {
-            total += item.price * item.quantity;  // Calculate total price
+            subtotal += item.price * item.quantity;
 
             let cartItem = document.createElement("div");
             cartItem.classList.add("cart-item");
@@ -67,7 +89,7 @@ function updateCart() {
                         <img src="${item.image}" alt="${item.name}">
                         <div class="cart-item-details">
                             <h4>${item.name}</h4>
-                            <p>$${item.price}</p>
+                            <p>$${item.price.toFixed(2)}</p>
                         </div>
                     </div>
                     <div class="cart-item-bottom">
@@ -87,27 +109,46 @@ function updateCart() {
                 </div>
             `;
 
-            cartContainer.appendChild(cartItem);  // Append the item to the cart container
+            cartContainer.appendChild(cartItem);
         });
 
-        // Update the total price
-        totalContainer.style.display = 'block'; // Ensure it is visible
-        document.getElementById("cart-total").innerText = total.toFixed(2);  // Update the displayed total
+        // Apply discount if a promo code is active
+        let discount = appliedPromoCode && promoCodes[appliedPromoCode] ? subtotal * promoCodes[appliedPromoCode] : 0;
+        let total = subtotal - discount;
+
+        // ✅ Fixing duplicate text by setting only the value, not appending
+        subtotalElement.textContent = subtotal.toFixed(2);
+        discountElement.textContent = discount.toFixed(2);
+        totalElement.textContent = total.toFixed(2);
     }
 
-    updateCartCount();  // Update the cart item count
-    saveCart();  // Save the cart state to localStorage
-
-    // Show checkout button if there are items in the cart
-    if (cart.length > 0) {
-        let checkoutBtn = document.createElement("div");
-        checkoutBtn.innerHTML = `
-            <button id="checkout-btn" class="btn btn-warning w-100 mt-3">Proceed to Payment</button>
-        `;
-        cartContainer.appendChild(checkoutBtn);
-    }
+    updateCartCount();
+    saveCart();
 }
 
+
+// Apply Promo Code
+function applyPromoCode() {
+    const promoInput = document.getElementById("promo-code").value.trim();
+    const promoMessage = document.getElementById("promo-message");
+
+    if (promoCodes[promoInput]) {
+        if (appliedPromoCode === promoInput) {
+            promoMessage.textContent = "Promo code already applied!";
+            promoMessage.style.color = "orange";
+        } else {
+            appliedPromoCode = promoInput;
+            promoMessage.textContent = "Promo code applied successfully!";
+            promoMessage.style.color = "green";
+            updateCart();
+        }
+    } else {
+        promoMessage.textContent = "Invalid promo code!";
+        promoMessage.style.color = "red";
+        appliedPromoCode = null;
+        updateCart();
+    }
+}
 
 // Save cart to localStorage
 function saveCart() {
@@ -126,11 +167,7 @@ document.addEventListener("DOMContentLoaded", loadCart);
 // Update cart item count in the navbar
 function updateCartCount() {
     let cartCount = document.getElementById("cart-count");
-    
-    // Sum all quantities in the cart
     let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    
-    // Update the count in the navbar
     cartCount.innerText = totalItems;
 }
 
@@ -138,7 +175,7 @@ function updateCartCount() {
 function increaseQuantity(id) {
     let item = cart.find(product => product.id === id);
     if (item) {
-        item.quantity++;  // Increase quantity by 1
+        item.quantity++;
     }
     updateCart();
 }
@@ -147,9 +184,9 @@ function increaseQuantity(id) {
 function decreaseQuantity(id) {
     let item = cart.find(product => product.id === id);
     if (item && item.quantity > 1) {
-        item.quantity--;  // Decrease quantity by 1
+        item.quantity--;
     } else {
-        cart = cart.filter(product => product.id !== id);  // Remove item if quantity is 0
+        cart = cart.filter(product => product.id !== id);
     }
     updateCart();
 }
